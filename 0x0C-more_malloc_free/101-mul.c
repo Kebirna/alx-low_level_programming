@@ -8,7 +8,7 @@
  */
 int main(void)
 	{
-		printf("Hel, World, World, Hel.\n");
+		printf("mul num1 num2.\n");
 
 		return (0);
 	}
