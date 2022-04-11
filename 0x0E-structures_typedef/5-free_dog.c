@@ -2,17 +2,19 @@
 #include <stdlib.h>
 
 /**
- * free_dog - frees memory held by passed struct
+ * free_dog - frees yo dawgs
+ * @d: yo dawg
  *
- * @d: struct to free
- * Return: nothing
+ * Return: void.
  */
 void free_dog(dog_t *d)
 {
-	if (d != NULL)
+	if (d)
 	{
-		free(d->name);
-		free(d->owner);
+		if (d->name)
+			free(d->name);
+		if (d->owner)
+			free(d->owner);
 		free(d);
 	}
 }
