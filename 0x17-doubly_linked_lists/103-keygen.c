@@ -1,45 +1,46 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 /**
- * main - generate a key depending on a username for crackme5
- * @argc: number of arguments passed
- * @argv: arguments passed to main
+ * main - keygen for crackme5
  *
- * Return: 0 on success, 1 on error
+ * @ac: argc
+ * @av: argv
+ *
+ * Return: 0 on completion, 1 if incorrect num of args
  */
-int main(int argc, char *argv[])
+int main(int ac, char *av[])
 {
-	unsigned int i, b;
-	size_t len, add;
-	char *l = "A-CHRDw87lNS0E9B2TibgpnMVys5XzvtOGJcYLU+4mjW6fxqZeF3Qa1rPhdKIouk";
-	char p[7] = "      ";
+	long nums[] = {0x3877445248432d41, 0x42394530534e6c37,
+			    0x4d6e706762695432, 0x74767a5835737956,
+			    0x2b554c59634a474f, 0x71786636576a6d34,
+			    0x723161513346655a, 0x6b756f494b646850};
+	int len = 0, temp, ct, randh;
+	char *str = (char *) nums, *uname = av[1], *ptr, password[7];
 
-	if (argc != 2)
-	{
-		printf("Correct usage: ./keygen5 username\n");
+	if (ac != 2)
 		return (1);
-	}
-	len = strlen(argv[1]);
-	p[0] = l[(len ^ 59) & 63];
-	for (i = 0, add = 0; i < len; i++)
-		add += argv[1][i];
-	p[1] = l[(add ^ 79) & 63];
-	for (i = 0, b = 1; i < len; i++)
-		b *= argv[1][i];
-	p[2] = l[(b ^ 85) & 63];
-	for (b = argv[1][0], i = 0; i < len; i++)
-		if ((char)b <= argv[1][i])
-			b = argv[1][i];
-	srand(b ^ 14);
-	p[3] = l[rand() & 63];
-	for (b = 0, i = 0; i < len; i++)
-		b += argv[1][i] * argv[1][i];
-	p[4] = l[(b ^ 239) & 63];
-	for (b = 0, i = 0; (char)i < argv[1][0]; i++)
-		b = rand();
-	p[5] = l[(b ^ 229) & 63];
-	printf("%s\n", p);
+	password[6] = 0;
+	for (ptr = uname; *ptr; ptr++)
+		len++;
+	password[0] = str[(len ^ 0x3b) & 0x3f];
+	for (ptr = uname, temp = 0; *ptr; ptr++)
+		temp += *ptr;
+	password[1] = str[(temp ^ 0x4f) & 0x3f];
+	for (ptr = uname, temp = 1; *ptr; ptr++)
+		temp *= *ptr;
+	password[2] = str[(temp ^ 0x55) & 0x3f];
+	for (ptr = uname, temp = *ptr; *ptr; ptr++)
+		if (temp < *ptr)
+			temp = *ptr;
+	srand(temp ^ 0xe);
+	password[3] = str[rand() & 0x3f];
+	for (ptr = uname, temp = 0; *ptr; ptr++)
+		temp += *ptr * *ptr;
+	password[4] = str[(temp ^ 0xef) & 0x3f];
+	for (temp = *uname, ct = 0; ct < temp; ct++)
+		randh = rand();
+	password[5] = str[(randh ^ 0xe5) & 0x3f];
+	printf("%s", password);
 	return (0);
 }
