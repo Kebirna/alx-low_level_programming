@@ -1,45 +1,132 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
- * main - generate a key depending on a username for crackme5
- * @argc: number of arguments passed
- * @argv: arguments passed to main
- *
- * Return: 0 on success, 1 on error
+ * f3 - crackme
+ * @i: first variable
+ * @j: second variable
+ * Return: char
  */
-int main(int argc, char *argv[])
+int f3(char *i, int j)
 {
-	unsigned int i, b;
-	size_t len, add;
-	char *l = "A-CHRDw87lNS0E9B2TibgpnMVys5XzvtOGJcYLU+4mjW6fxqZeF3Qa1rPhdKIouk";
-	char p[7] = "      ";
+	int a;
+	int b;
+
+	a = 1;
+	b = 0;
+	while (b < j)
+	{
+		a = i[b] * a;
+		b = b + 1;
+	}
+	return ((a ^ 0x55) & 0x3f);
+}
+
+/**
+ * f4 - crackme
+ * @i: first variable
+ * @j: second variable
+ * Return: char
+ */
+int f4(char *i, int j)
+{
+	int a;
+	int b;
+
+	a = (int)*i;
+	b = 0;
+	for (; b < j; b++)
+	{
+		if (a < (int)i[(long)b])
+		{
+			a = (int)i[(long)b];
+		}
+	}
+	srand(a ^ 0xe);
+	return (rand() & 0x3f);
+}
+
+/**
+ * f5 - crackme
+ * @i: first variable
+ * @j: second variable
+ * Return: char
+ */
+int f5(char *i, int j)
+{
+	int a;
+	int b;
+
+	a = 0;
+	b = 0;
+	while (b < j)
+	{
+		a = a + (int)i[(long)b] * (int)i[(long)b];
+		b = b + 1;
+	}
+	return ((a ^ 0xef) & 0x3f);
+}
+
+/**
+ * f6 - crackme
+ * @i: first variable
+ * Return: char
+ */
+int f6(char i)
+{
+	int a;
+	int b;
+
+	a = 0;
+	b = 0;
+	while (b < i)
+	{
+		a = rand();
+		b = b + 1;
+	}
+	return ((a ^ 0xe5) & 0x3f);
+}
+
+/**
+ * main - Entry Point
+ * @argc: count
+ * @argv: arguments
+ * Return: 0
+ */
+int main(int argc, char **argv)
+{
+	int a, b, c;
+	char *s;
+	long int arr[] = {
+		0x3877445248432d41,
+		0x42394530534e6c37,
+		0x4d6e706762695432,
+		0x74767a5835737956,
+		0x2b554c59634a474f,
+		0x71786636576a6d34,
+		0x723161513346655a,
+		0x6b756f494b646850
+	};
 
 	if (argc != 2)
+		exit(1);
+
+	s = argv[1];
+	a = strlen(s);
+	putchar(((char *)arr)[(a ^ 59) & 63]);
+	c = 0;
+	b = 0;
+	while (b < a)
 	{
-		printf("Correct usage: ./keygen5 username\n");
-		return (1);
+		c = c + s[b];
+		b = b + 1;
 	}
-	len = strlen(argv[1]);
-	p[0] = l[(len ^ 59) & 63];
-	for (i = 0, add = 0; i < len; i++)
-		add += argv[1][i];
-	p[1] = l[(add ^ 79) & 63];
-	for (i = 0, b = 1; i < len; i++)
-		b *= argv[1][i];
-	p[2] = l[(b ^ 85) & 63];
-	for (b = argv[1][0], i = 0; i < len; i++)
-		if ((char)b <= argv[1][i])
-			b = argv[1][i];
-	srand(b ^ 14);
-	p[3] = l[rand() & 63];
-	for (b = 0, i = 0; i < len; i++)
-		b += argv[1][i] * argv[1][i];
-	p[4] = l[(b ^ 239) & 63];
-	for (b = 0, i = 0; (char)i < argv[1][0]; i++)
-		b = rand();
-	p[5] = l[(b ^ 229) & 63];
-	printf("%s\n", p);
+	putchar(((char *)arr)[(c ^ 0x4f) & 0x3f]);
+	putchar(((char *)arr)[f3(s, a)]);
+	putchar(((char *)arr)[f4(s, a)]);
+	putchar(((char *)arr)[f5(s, a)]);
+	putchar(((char *)arr)[f6(*s)]);
+
 	return (0);
 }
