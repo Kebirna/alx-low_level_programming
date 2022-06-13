@@ -1,5 +1,5 @@
-#ifndef HOLBERTONH
-#define HOLBERTONH
+#ifndef MAIN.H
+#define MAIN.H
 
 int _isupper(int);
 char *_memset(char *s, char b, unsigned int n);
